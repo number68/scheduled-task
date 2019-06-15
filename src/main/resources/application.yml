@@ -2,7 +2,7 @@ spring:
   application:
     name: scheduled-task
   datasource:
-    url: jdbc:mysql://172.17.31.65:3306/choice_member?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3306/scheduled-task?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&characterEncoding=UTF-8
     username: dev
     password: jIe202uYte6NBm903Xc0363Ndelsrv22V
     initial-size: 10
