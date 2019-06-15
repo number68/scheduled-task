@@ -1,0 +1,131 @@
+<div class="index-content">
+    <section class="content-header">
+        <h4 data-lang="sidebar-history-status"></h4>
+        <ol class="breadcrumb">
+            <li class="active"><i class="fa fa-history" data-lang="sidebar-job-history"></i></li>
+            <li class="active" data-lang="sidebar-history-status"></li>
+        </ol>
+    </section>
+    <section class="content">
+        <div id="jobExecStatusToolbar">
+            <div class="form-inline" role="form">
+                <div class="form-group toolbar">
+                    <label for="job-name" data-lang="job-name"></label>
+                    <input type="text" class="form-control" id="job-name" placeholder="">
+                </div>
+                <div class="form-group toolbar">
+                    <label for="state" data-lang="status"></label>
+                    <select id="state" name="state" class="form-control" data-toggle="tooltip" data-placement="bottom">
+                        <option value="" data-lang="execute-result-all"></option>
+                        <option value="TASK_STAGING" data-lang="status-staging"></option>
+                        <option value="TASK_FAILED" data-lang="status-task-failed"></option>
+                        <option value="TASK_FINISHED" data-lang="status-task-finished"></option>
+                        <option value="TASK_RUNNING" data-lang="status-running"></option>
+                        <option value="TASK_ERROR" data-lang="status-task-error"></option>
+                        <option value="TASK_KILLED" data-lang="status-task-killed"></option>
+                    </select>
+                </div>
+                <br/>
+                <div class="form-group toolbar">
+                    <label for="start-time" data-lang="creation-start-time"></label>
+                    <input type="text" class="form-control pull-right custom-datepicker" id="start-time">
+                </div>
+                <div class="form-group toolbar">
+                    <label for="end-time" data-lang="creation-end-time"></label>
+                    <input type="text" class="form-control pull-right custom-datepicker" id="end-time">
+                </div>
+            </div>
+        </div>
+        <table id="job-exec-status-table"
+               data-show-refresh="true"
+               data-show-toggle="true"
+               data-striped="true"
+               data-toggle="table"
+               data-url="/api/event-trace/status"
+               data-flat="true"
+               data-click-to-select="true"
+               data-row-style="rowStyle"
+               data-query-params="queryParams"
+               data-method="post"
+               data-query-params-type="notLimit"
+               data-side-pagination="server"
+               data-pagination="true"
+               data-page-list="[10, 20, 50, 100]"
+               data-show-columns="true"
+               data-sort-name="creationTime"
+               data-sort-order="desc"
+               data-toolbar="#jobExecStatusToolbar">
+            <thead>
+            <tr>
+                <th data-field="jobName" data-sortable="true"><span data-lang="job-name"></span></th>
+                <th data-field="shardingItems"><span data-lang="job-sharding-item"></span></th>
+                <th data-field="state" data-sortable="true" data-formatter="stateFormatter"><span
+                        data-lang="status"></span></th>
+                <th data-field="creationTime" data-sortable="true" data-formatter="dateTimeFormatter"><span
+                        data-lang="creation-time"></span></th>
+                <th data-field="message" data-formatter="splitRemarkFormatter"><span data-lang="comments"></span></th>
+            </tr>
+            </thead>
+        </table>
+    </section>
+</div>
+<script>
+    function queryParams(params) {
+        var sortName = "success" === params.sortName ? "isSuccess" : params.sortName;
+        return {
+            perPage: params.pageSize,
+            page: params.pageNumber,
+            q: params.searchText,
+            sort: sortName,
+            order: params.sortOrder,
+            jobName: $("#job-name").val(),
+            state: $("#state").val(),
+            startTime: $("#start-time").val(),
+            endTime: $("#end-time").val()
+        };
+    }
+
+    function splitRemarkFormatter(value, row) {
+        var maxLength = 50;
+        var replacement = "...";
+        if (null != value && value.length > maxLength) {
+            var valueDetail = value.substring(0, maxLength - replacement.length) + replacement;
+            value = value.replace(/\r\n/g, "<br/>").replace(/\n/g, "<br/>").replace(/\'/g, "\\'");
+            var remarkHtml;
+            if ("TASK_FAILED" === row.state || "TASK_ERROR" === row.state) {
+                remarkHtml = '<a href="javascript: void(0);" style="color:#FF0000;" onClick="showHistoryMessage(\'' + value + '\')">' + valueDetail + '</a>';
+            } else {
+                remarkHtml = '<a href="javascript: void(0);" style="color:black;" onClick="showHistoryMessage(\'' + value + '\')">' + valueDetail + '</a>';
+            }
+            return remarkHtml;
+        }
+        return value;
+    }
+
+    function stateFormatter(value) {
+        switch (value) {
+            case "TASK_STAGING":
+                return "<span class='label label-default' data-lang='status-staging'></span>";
+            case "TASK_FAILED":
+                return "<span class='label label-danger' data-lang='status-task-failed'></span>";
+            case "TASK_FINISHED":
+                return "<span class='label label-success' data-lang='status-task-finished'></span>";
+            case "TASK_RUNNING":
+                return "<span class='label label-primary' data-lang='status-running'></span>";
+            case "TASK_ERROR":
+                return "<span class='label label-danger' data-lang='status-task-error'></span>";
+            case "TASK_KILLED":
+                return "<span class='label label-warning' data-lang='status-task-killed'></span>";
+            default:
+                return "-";
+        }
+    }
+</script>
+<script src="lib/bootstrap-table/bootstrap-table.js"></script>
+<script src="lib/daterangepicker/moment.min.js"></script>
+<script src="lib/daterangepicker/daterangepicker.js"></script>
+<script src="lib/input-mask/jquery.inputmask.js"></script>
+<script src="lib/input-mask/jquery.inputmask.date.extensions.js"></script>
+<script src="lib/input-mask/jquery.inputmask.extensions.js"></script>
+<script src="js/util/formatter.js"></script>
+<script src="js/history/job_status_history.js"></script>

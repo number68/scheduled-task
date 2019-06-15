@@ -1,0 +1,52 @@
+spring:
+  application:
+    name: scheduled-task
+  datasource:
+    url: jdbc:mysql://172.17.31.65:3306/choice_member?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&characterEncoding=UTF-8
+    username: dev
+    password: jIe202uYte6NBm903Xc0363Ndelsrv22V
+    initial-size: 10
+    driver-class-name: com.mysql.jdbc.Driver
+    min-idle: 5
+    max-active: 1000
+    max-wait: 3000
+    remove-abandoned: true
+    remove-abandoned-timeout: 180
+    time-between-eviction-runs-millis: 60000
+    min-evictable-idle-time-millis: 300000
+    validation-query: SELECT 'x' FROM DUAL
+    test-while-idle: true
+    test-on-borrow: false
+    test-on-return: false
+    max-open-prepared-statements: -1
+    pool-prepared-statements: false
+    max-pool-prepared-statement-per-connection-size: -1
+    connection-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000;
+    filters: stat,slf4j,wall
+
+auth:
+  username: admin
+  password: 123456
+
+#registry ceter
+zookeeper:
+  serviceLists: 172.16.5.3:2181,172.16.5.4:2181,172.16.5.5:2181
+  namespace: scheduled-task
+  baseSleepTimeMilliseconds: 5000
+  maxSleepTimeMilliseconds: 5000
+  maxRetries: 3
+
+scheduledTask:
+  monitor:
+    enable: true
+    time:
+      interval: 3
+
+server:
+  port: 8090
+
+logging:
+  level:
+    root: info
+    com.cloud.task: debug
+    com.dangdang.ddframe.job: debug
