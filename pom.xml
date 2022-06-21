@@ -21,7 +21,7 @@
         <fastjson.version>1.2.47</fastjson.version>
         <slf4j-api.version>1.7.25</slf4j-api.version>
         <druid.version>1.1.9</druid.version>
-        <mysql.version>5.1.47</mysql.version>
+        <mysql.version>8.0.28</mysql.version>
         <commons-codec.version>1.12</commons-codec.version>
     </properties>
 
