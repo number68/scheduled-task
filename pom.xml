@@ -17,7 +17,7 @@
         <lombok.version>1.16.18</lombok.version>
         <elastic-job.version>2.1.5</elastic-job.version>
         <curator.version>2.10.0</curator.version>
-        <swagger.version>2.9.2</swagger.version>
+        <swagger.version>2.10.0</swagger.version>
         <fastjson.version>1.2.47</fastjson.version>
         <slf4j-api.version>1.7.25</slf4j-api.version>
         <druid.version>1.1.9</druid.version>
